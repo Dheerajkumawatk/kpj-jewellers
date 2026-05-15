@@ -1,8 +1,30 @@
 {
-  "buildCommand": "npm run build",
-  "outputDirectory": "dist/client",
+  "version": 2,
+  "env": {
+    "NODE_ENV": "production"
+  },
+  "builds": [
+    {
+      "src": "dist/server/index.js",
+      "use": "@vercel/node",
+      "config": {
+        "maxLambdaSize": "50mb"
+      }
+    },
+    {
+      "src": "dist/client/**",
+      "use": "@vercel/static"
+    }
+  ],
   "routes": [
-    { "src": "/(.*\\.[^/]+$)", "dest": "/$1" },
-    { "src": "/(.*)", "dest": "/index.html" }
+    {
+      "src": "/(.*\\.[^/]+$)",
+      "dest": "dist/client/$1",
+      "continue": true
+    },
+    {
+      "src": "/(.*)",
+      "dest": "dist/server/index.js"
+    }
   ]
 }
